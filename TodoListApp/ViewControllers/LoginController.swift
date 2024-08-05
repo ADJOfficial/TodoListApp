@@ -16,7 +16,7 @@ class LoginController: UIViewController {
     private let titleLabel = Label(text: "O3 INTERFACES",textFont: .bold(ofSize: 40))
     private let headingLabel = Label(text: "Login Required",textFont: .bold(ofSize: 20))
     private let descriptionLabel = Label(text: "Please Sign in to continue.",textFont: .regular(ofSize: 15))
-    private let faceID = SystemImageButton(image: UIImage(systemName: "faceid"),size: UIImage.SymbolConfiguration(pointSize: 60), tintColor: .blue)
+    private let faceID = SystemImageButton(image: UIImage(systemName: "faceid"),size: UIImage.SymbolConfiguration(pointSize: 60), tintColor: .systemGreen)
     private let emailFieldView = View()
     private let emailTextField = TextField(placeHolder: "Enter your email", returnType: .next)
     private let emailRequired = Label(text: "Required*", textColor: .systemRed, textFont: .bold(ofSize: 18))
@@ -32,16 +32,17 @@ class LoginController: UIViewController {
         super.viewDidLoad()
         setupViews()
         addTargets()
+        setupKeyboardLayout()
         emailTextField.delegate = self
         passwordTextField.delegate = self
         signinButton.alpha = 0.5
         signinButton.isUserInteractionEnabled = false
         print("This Func is Called : \(#function)")
     }
-
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
     }
+    
     private func setupViews() {
         view.addSubview(backgroundView)
         view.addSubview(titleLabel)
@@ -237,7 +238,7 @@ class LoginController: UIViewController {
                             self.loginButtonTapped()
                         }
                     }
-                    print("User signed up successfully with Face ID")
+                    print("User Sign in successfully with Face ID")
                 } else if let error = error  {
                     print("Face ID authentication failed: \(error.localizedDescription)")
                 }
@@ -252,8 +253,8 @@ class LoginController: UIViewController {
         changeState()
     }
     @objc func loginButtonTapped() {
-        let goToTodoListController = TodoListController()
-        navigationController?.pushViewController(goToTodoListController, animated: true)
+        let otpController = TodoListController()
+        navigationController?.pushViewController(otpController, animated: true)
     }
 }
 

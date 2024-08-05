@@ -266,10 +266,6 @@ extension TodoListController: UITableViewDelegate, UITableViewDataSource, UIText
          }
          return cell
     }
-//    func searchTextFieldShouldReturn(_ textField: UITextField) -> Bool {
-//        textField.resignFirstResponder()
-//        return true
-//    }
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true

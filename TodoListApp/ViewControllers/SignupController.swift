@@ -31,6 +31,7 @@ class SignupController: UIViewController {
         super.viewDidLoad()
         setupViews()
         buttonTarget()
+        setupKeyboardLayout()
         emailTextField.delegate = self
         passwordTextField.delegate = self
         signupButton.alpha = 0.5

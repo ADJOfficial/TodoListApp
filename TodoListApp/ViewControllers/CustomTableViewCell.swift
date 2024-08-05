@@ -13,7 +13,7 @@ class CustomTableViewCell: UITableViewCell {
     private let detailsIcon = SystemImageButton(image: UIImage(systemName: "info.circle"), tintColor: .systemBlue)
     private let editView = View(backgroundColor: .systemGray5)
     private let editLabel = Label(text: "Edit", textFont: .bold(ofSize: 15))
-    private let editIcon = ImageView(imageName: "editIcon")
+    private let editIcon = ImageView(imageName: "iconEdit")
     private let deleteIcon = SystemImageButton(image: UIImage(systemName: "trash.fill"), tintColor: .red)
     let taskTitle = Label(textColor: .systemBlue, textFont: .bold(ofSize: 30))
     let taskDescription = Label(textFont: .bold(ofSize: 20))
@@ -52,7 +52,7 @@ class CustomTableViewCell: UITableViewCell {
             cellView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             cellView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             cellView.topAnchor.constraint(equalTo: self.topAnchor),
-            cellView.bottomAnchor.constraint(equalTo: self.bottomAnchor,constant: -30),
+            cellView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -30),
             
             detailsIcon.topAnchor.constraint(equalTo: cellView.topAnchor, constant: 20),
             detailsIcon.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: -25),
