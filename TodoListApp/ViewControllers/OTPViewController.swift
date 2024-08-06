@@ -17,7 +17,7 @@ class OTPViewController: UIViewController {
     private let verificationLabel = Label(text: "Verification", textFont: .bold(ofSize: 30))
     private let descriptionLabel = Label(text: "Enter your Authenticate Phone Number that ends with number ••••••••077", textFont: .medium(ofSize: 15))
     private let otpFieldView = View()
-    private let otpTextField = TextField(placeHolder: "Enter your phone number", returnType: .done)
+    private let otpTextField = TextField(placeHolder: "Enter your phone number", returnType: .done, keyboardType: .phonePad)
     private let verifyOTPButton = Button(setTitle: "Verify")
     
     override func viewDidLoad() {
@@ -81,7 +81,7 @@ class OTPViewController: UIViewController {
     }
     
     @objc func didVerifyButtonTapped() {
-        let phoneNo = otpTextField.text ?? ""
+        let phoneNo = "+92 \(otpTextField.text ?? "")"
         let otpCode = "123123"
         PhoneAuthProvider.provider().verifyPhoneNumber(phoneNo, uiDelegate: nil) { verificationID , error in
             if let error = error {

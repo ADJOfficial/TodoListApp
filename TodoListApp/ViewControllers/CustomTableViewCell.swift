@@ -52,7 +52,7 @@ class CustomTableViewCell: UITableViewCell {
             cellView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             cellView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             cellView.topAnchor.constraint(equalTo: self.topAnchor),
-            cellView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -30),
+            cellView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -25),
             
             detailsIcon.topAnchor.constraint(equalTo: cellView.topAnchor, constant: 20),
             detailsIcon.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: -25),
