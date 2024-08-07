@@ -8,10 +8,10 @@
 
 import UIKit
 import Firebase
-import Security
+//import Security
 import LocalAuthentication
 
-class LoginController: UIViewController {
+class LoginViewController: UIViewController {
     private let backgroundView = ImageView()
     private let titleLabel = Label(text: "O3 INTERFACES",textFont: .bold(ofSize: 40))
     private let headingLabel = Label(text: "Login Required",textFont: .bold(ofSize: 20))
@@ -75,29 +75,28 @@ class LoginController: UIViewController {
             descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             descriptionLabel.topAnchor.constraint(equalTo: headingLabel.bottomAnchor),
    
-            emailFieldView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            emailFieldView.heightAnchor.constraint(equalToConstant: 50),
             emailFieldView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             emailFieldView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             emailFieldView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            emailFieldView.heightAnchor.constraint(equalToConstant: 50),
             
-            emailTextField.leadingAnchor.constraint(equalTo: emailFieldView.leadingAnchor, constant: 20),
-            emailTextField.trailingAnchor.constraint(equalTo: emailFieldView.trailingAnchor, constant: -20),
             emailTextField.topAnchor.constraint(equalTo: emailFieldView.topAnchor),
             emailTextField.bottomAnchor.constraint(equalTo: emailFieldView.bottomAnchor),
+            emailTextField.leadingAnchor.constraint(equalTo: emailFieldView.leadingAnchor, constant: 20),
+            emailTextField.trailingAnchor.constraint(equalTo: emailFieldView.trailingAnchor, constant: -20),
 
             emailRequired.topAnchor.constraint(equalTo: emailFieldView.bottomAnchor, constant: 5),
             emailRequired.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 25),
             
+            passwordFieldView.heightAnchor.constraint(equalToConstant: 50),
             passwordFieldView.topAnchor.constraint(equalTo: emailRequired.bottomAnchor, constant: 25),
             passwordFieldView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             passwordFieldView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            passwordFieldView.heightAnchor.constraint(equalToConstant: 50),
             
-            passwordTextField.leadingAnchor.constraint(equalTo: passwordFieldView.leadingAnchor, constant: 20),
-            passwordTextField.trailingAnchor.constraint(equalTo: passwordFieldView.trailingAnchor, constant: -20),
             passwordTextField.topAnchor.constraint(equalTo: passwordFieldView.topAnchor),
             passwordTextField.bottomAnchor.constraint(equalTo: passwordFieldView.bottomAnchor),
+            passwordTextField.leadingAnchor.constraint(equalTo: passwordFieldView.leadingAnchor, constant: 20),
+            passwordTextField.trailingAnchor.constraint(equalTo: passwordFieldView.trailingAnchor, constant: -20),
 
             showPassword.topAnchor.constraint(equalTo: passwordTextField.topAnchor),
             showPassword.bottomAnchor.constraint(equalTo: passwordTextField.bottomAnchor),
@@ -114,20 +113,20 @@ class LoginController: UIViewController {
             faceID.topAnchor.constraint(equalTo: signinButton.bottomAnchor, constant: 20),
             faceID.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
-            accountLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             accountLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            accountLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
 
             signupButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor ,constant: 7),
             signupButton.leadingAnchor.constraint(equalTo: accountLabel.trailingAnchor, constant: 10),
         ])
     }
     private func addTargets() {
-        signupButton.addTarget(self, action: #selector(signupButtonTapped), for: .touchUpInside)
+        showPassword.addTarget(self, action: #selector(eyeButtonTapped), for: .touchUpInside)
         signinButton.addTarget(self, action: #selector(userLogin), for: .touchUpInside)
         faceID.addTarget(self, action: #selector(signUpWithFaceID), for: .touchUpInside)
+        signupButton.addTarget(self, action: #selector(signupButtonTapped), for: .touchUpInside)
         emailTextField.addTarget(self, action: #selector(textFieldDidChanged), for: .editingChanged)
         passwordTextField.addTarget(self, action: #selector(textFieldDidChanged), for: .editingChanged)
-        showPassword.addTarget(self, action: #selector(eyeButtonTapped), for: .touchUpInside)
     }
     private func changeState() {
         self.emailTextField.text = ""
@@ -253,12 +252,12 @@ class LoginController: UIViewController {
         changeState()
     }
     @objc func loginButtonTapped() {
-        let otpController = TodoListController()
+        let otpController = OTPViewController()
         navigationController?.pushViewController(otpController, animated: true)
     }
 }
 
-extension LoginController: UITextFieldDelegate {
+extension LoginViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == emailTextField {
             passwordTextField.becomeFirstResponder()
