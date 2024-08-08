@@ -8,11 +8,11 @@
 import Foundation
 
 struct WorkList {
-    let task_Title: String
-    let task_Description: String
-    let task_Date: String
-    let task_Image: String
+    let taskTitle: String
+    let taskDescription: String
+    let taskDate: String
+    let taskImage: String
     let documentID: String
-    let task_currentStatus: String
-    let task_TimeStamp: String
+    let taskcurrentStatus: String
+    let taskTimeStamp: String
 }

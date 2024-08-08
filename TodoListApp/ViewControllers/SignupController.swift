@@ -10,10 +10,9 @@ import UIKit
 import Firebase
 
 class SignupController: UIViewController {
-
     private let backgroundImageView = ImageView()
     private let backButton = BackButton()
-    private let titleLabel = Label(text: "Sign up",textFont: .bold(ofSize: 40))
+    private let titleLabel = Label(text: "Sign up",textFont: .bold())
     private let headingLabel = Label(text: "Create an account",textFont: .bold(ofSize: 20))
     private let descriptionLabel = Label(text: "Please Sign up to continue", textFont: .regular(ofSize: 15))
     private let emailFieldView = View()
@@ -40,6 +39,7 @@ class SignupController: UIViewController {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
     }
+    
     private func setupViews() {
         view.addSubview(backgroundImageView)
         view.addSubview(titleLabel)
@@ -56,6 +56,7 @@ class SignupController: UIViewController {
         view.addSubview(signupButton)
         view.addSubview(accountLabel)
         view.addSubview(loginButton)
+        
         NSLayoutConstraint.activate([
             backgroundImageView.topAnchor.constraint(equalTo: view.topAnchor),
             backgroundImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -118,11 +119,11 @@ class SignupController: UIViewController {
     }
     private func buttonTarget() {
         backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
-        loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
+        showPassword.addTarget(self, action: #selector(eyeButtonTapped), for: .touchUpInside)
         signupButton.addTarget(self, action: #selector(userSignup), for: .touchUpInside)
+        loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
         emailTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
         passwordTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
-        showPassword.addTarget(self, action: #selector(eyeButtonTapped), for: .touchUpInside)
     }
     private func validateEmail() {
         if let email = emailTextField.text, !email.isEmpty {
@@ -204,7 +205,6 @@ class SignupController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
 }
-
 extension SignupController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == emailTextField {

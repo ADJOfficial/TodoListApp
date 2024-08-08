@@ -68,7 +68,7 @@ class CustomTableViewCell: UITableViewCell {
 //            taskImage.heightAnchor.constraint(equalToConstant: 200),
 //            taskImage.topAnchor.constraint(equalTo: taskDescription.bottomAnchor, constant: 20),
 //            taskImage.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: -25),
-            
+//            
 //            taskDate.topAnchor.constraint(equalTo: taskDescription.bottomAnchor,constant: 25),
 //            taskDate.leadingAnchor.constraint(equalTo: cellView.leadingAnchor,constant: 25),
             

@@ -22,7 +22,6 @@ class ImagePickerView: UIImageView {
         self.layer.cornerRadius = cornerRadius
         self.contentMode = aspectRatio
         self.clipsToBounds = bounds
-//        self.layer.borderColor = border
     }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

@@ -59,7 +59,7 @@
 		0FB230D42C3BA0A200EF38D0 /* FirebaseVertexAI-Preview in Frameworks */ = {isa = PBXBuildFile; productRef = 0FB230D32C3BA0A200EF38D0 /* FirebaseVertexAI-Preview */; };
 		0FB230F62C3BCC7700EF38D0 /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB230F52C3BCC7700EF38D0 /* CustomTableViewCell.swift */; };
 		0FE2DEC62C3805E9006A7E55 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FE2DEC52C3805E9006A7E55 /* AppDelegate.swift */; };
-		0FE2DECA2C3805EA006A7E55 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FE2DEC92C3805EA006A7E55 /* LoginController.swift */; };
+		0FE2DECA2C3805EA006A7E55 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FE2DEC92C3805EA006A7E55 /* LoginViewController.swift */; };
 		0FE2DECF2C3805ED006A7E55 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0FE2DECE2C3805ED006A7E55 /* Assets.xcassets */; };
 		0FE2DED22C3805ED006A7E55 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 0FE2DED12C3805ED006A7E55 /* Base */; };
 		0FE2DEDA2C3807FF006A7E55 /* TodoListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FE2DED92C3807FF006A7E55 /* TodoListController.swift */; };
@@ -92,7 +92,7 @@
 		0FB230F52C3BCC7700EF38D0 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
 		0FE2DEC22C3805E9006A7E55 /* TodoListApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TodoListApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0FE2DEC52C3805E9006A7E55 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		0FE2DEC92C3805EA006A7E55 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
+		0FE2DEC92C3805EA006A7E55 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		0FE2DECE2C3805ED006A7E55 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0FE2DED12C3805ED006A7E55 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0FE2DED32C3805ED006A7E55 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -142,8 +142,8 @@
 		0F7561652C48CA6D00D4AF0D /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				0FE2DEC92C3805EA006A7E55 /* LoginController.swift */,
 				0F703CF82C5A1B1000C87D99 /* OTPViewController.swift */,
+				0FE2DEC92C3805EA006A7E55 /* LoginViewController.swift */,
 				0FE2DEDB2C380821006A7E55 /* SignupController.swift */,
 				0FE2DED92C3807FF006A7E55 /* TodoListController.swift */,
 				0FB230F52C3BCC7700EF38D0 /* CustomTableViewCell.swift */,
@@ -344,7 +344,7 @@
 				0F703CFB2C5A1CC800C87D99 /* OTPTextField.swift in Sources */,
 				0F9746732C44D8CB00D46CE8 /* TableView.swift in Sources */,
 				0F97466B2C44D66100D46CE8 /* View.swift in Sources */,
-				0FE2DECA2C3805EA006A7E55 /* LoginController.swift in Sources */,
+				0FE2DECA2C3805EA006A7E55 /* LoginViewController.swift in Sources */,
 				0F9746712C44D6C000D46CE8 /* SystemImageButton.swift in Sources */,
 				0FE2DEC62C3805E9006A7E55 /* AppDelegate.swift in Sources */,
 				0FE2DEDC2C380821006A7E55 /* SignupController.swift in Sources */,

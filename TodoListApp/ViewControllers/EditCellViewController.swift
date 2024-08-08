@@ -12,7 +12,7 @@ import FirebaseStorage
 class EditViewController: UIViewController {
     
     private let backgroundImageView = ImageView()
-    private let screenTitle = Label(text: "Update Task",textFont: .bold(ofSize: 40))
+    private let screenTitle = Label(text: "Update Task",textFont: .bold())
     private let backButton = BackButton()
     private let titleView = View()
     private let titleTextField = TextField(returnType: .next)
@@ -20,7 +20,7 @@ class EditViewController: UIViewController {
     private let descriptionTextField = TextField(returnType: .done)
     private let dateTimePicker = DateTimePicker()
     private let updateButton = Button(setTitle: "Update")
-    private let selectImageText = Label(text: "Tap on view to select Image?", textFont: .regular())
+    private let selectImageText = Label(text: "Tap on view to select New Image?", textFont: .bold(ofSize: 10))
     private let imagePickerView = ImagePickerView()
     
     private var db = Firestore.firestore()
@@ -149,7 +149,7 @@ class EditViewController: UIViewController {
                 print("Error While Uploading Image\(error.localizedDescription)")
             }
         }
-        let taskData = ["task_Title": titleTextField.text ?? "", "task_Description": descriptionTextField.text ?? "", "task_Date": changeDateFormate(),"task_Image": path,"task_currentStatus": "Pending", "task_TimeStamp": timeStamp] as [String : Any]
+        let taskData = ["taskTitle": titleTextField.text ?? "", "taskDescription": descriptionTextField.text ?? "", "taskDate": changeDateFormate(),"taskImage": path,"taskcurrentStatus": "Pending", "taskTimeStamp": timeStamp] as [String : Any]
         updateTask.document(documentId).setData(taskData) { error in
             if let error = error {
                 print("Task Not Updated: \(error.localizedDescription)")
@@ -202,7 +202,7 @@ class EditViewController: UIViewController {
     }
 }
 
-extension EditViewController: UIImagePickerControllerDelegate , UINavigationControllerDelegate, UITextFieldDelegate {
+extension EditViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let selectedImage = info[.editedImage] as? UIImage {
             imagePickerView.image = selectedImage
@@ -216,7 +216,7 @@ extension EditViewController: UIImagePickerControllerDelegate , UINavigationCont
     }
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == titleTextField {
-            titleTextField.becomeFirstResponder()
+            descriptionTextField.becomeFirstResponder()
         }else {
             descriptionTextField.resignFirstResponder()
         }

@@ -14,14 +14,14 @@ class AddItemController: UIViewController {
     
     private let backgroundImageView = ImageView()
     private let backButton = BackButton()
-    private let screenTitle = Label(text: "New Work", textFont: .bold(ofSize: 40))
+    private let screenTitle = Label(text: "New Work", textFont: .bold())
     private let titleView = View()
     private let titleTextField = TextField(placeHolder: "Enter task title", returnType: .next)
     private let descriptionView = View()
     private let descriptionTextField = TextField(placeHolder: "Enter task description", returnType: .done)
     private let dateTimePicker = DateTimePicker()
-    private let selectImageText = Label(text: "Tap on view to select Image?", textFont: .regular())
-    private let imagePickerView = ImagePickerView()
+    private let uploadImage = Label(text: "Upload an Image?", textColor: .brown, textFont: .bold(ofSize: 20))
+    private let imagePickerView = ImagePickerView(backgroundColor: .clear)
     private let addButton = Button(setTitle: "Add")
     
     private var db = Firestore.firestore()
@@ -47,7 +47,7 @@ class AddItemController: UIViewController {
         view.addSubview(descriptionView)
         descriptionView.addSubview(descriptionTextField)
         view.addSubview(dateTimePicker)
-        view.addSubview(selectImageText)
+        view.addSubview(uploadImage)
         view.addSubview(imagePickerView)
         view.addSubview(addButton)
         NSLayoutConstraint.activate([
@@ -90,12 +90,12 @@ class AddItemController: UIViewController {
             addButton.topAnchor.constraint(equalTo: dateTimePicker.bottomAnchor, constant: 25),
             addButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25),
             
-            selectImageText.topAnchor.constraint(equalTo: addButton.bottomAnchor, constant: 10),
-            selectImageText.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 25),
+            uploadImage.topAnchor.constraint(equalTo: addButton.bottomAnchor),
+            uploadImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 25),
             
             imagePickerView.widthAnchor.constraint(equalToConstant: 200),
             imagePickerView.heightAnchor.constraint(equalToConstant: 150),
-            imagePickerView.topAnchor.constraint(equalTo: selectImageText.bottomAnchor, constant: 5),
+            imagePickerView.topAnchor.constraint(equalTo: uploadImage.bottomAnchor, constant: 5),
             imagePickerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 25),
         ])
     }
@@ -106,8 +106,8 @@ class AddItemController: UIViewController {
         titleTextField.addTarget(self, action: #selector(didTextFieldChanged), for: .editingChanged)
         descriptionTextField.addTarget(self, action: #selector(didTextFieldChanged), for: .editingChanged)
         let tappedImageView = UITapGestureRecognizer(target: self, action: #selector(didTappedImageView))
-        imagePickerView.addGestureRecognizer(tappedImageView)
-        imagePickerView.isUserInteractionEnabled = true
+        uploadImage.addGestureRecognizer(tappedImageView)
+        uploadImage.isUserInteractionEnabled = true
     }
 
     @objc func addItem() {
@@ -127,7 +127,7 @@ class AddItemController: UIViewController {
                 print("Error While Uploading Image\(error.localizedDescription)")
             }
         }
-        collection.addDocument(data: ["task_Title": titleTextField.text ?? "", "task_Description": descriptionTextField.text ?? "", "task_Date": changeDateTimeFormat(),"task_Image": path,"task_currentStatus": "Pending", "task_TimeStamp": timestamp]) { error in
+        collection.addDocument(data: ["taskTitle": titleTextField.text ?? "", "taskDescription": descriptionTextField.text ?? "", "taskDate": changeDateTimeFormat(),"taskImage": path,"taskcurrentStatus": "Pending", "taskTimeStamp": timestamp]) { error in
             if let error = error {
                 print("Task Not Added: \(error.localizedDescription)")
                 let alert = UIAlertController(title: "Save Unsuccessful", message: error.localizedDescription, preferredStyle: .alert)
@@ -203,7 +203,7 @@ extension AddItemController: UIImagePickerControllerDelegate , UINavigationContr
 extension AddItemController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == titleTextField {
-            titleTextField.becomeFirstResponder()
+            descriptionTextField.becomeFirstResponder()
         }else {
             descriptionTextField.resignFirstResponder()
         }

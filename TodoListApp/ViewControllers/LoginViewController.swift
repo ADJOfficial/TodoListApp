@@ -13,10 +13,10 @@ import LocalAuthentication
 
 class LoginViewController: UIViewController {
     private let backgroundView = ImageView()
-    private let titleLabel = Label(text: "O3 INTERFACES",textFont: .bold(ofSize: 40))
+    private let titleLabel = Label(text: "O3 INTERFACES",textFont: .bold())
     private let headingLabel = Label(text: "Login Required",textFont: .bold(ofSize: 20))
     private let descriptionLabel = Label(text: "Please Sign in to continue.",textFont: .regular(ofSize: 15))
-    private let faceID = SystemImageButton(image: UIImage(systemName: "faceid"),size: UIImage.SymbolConfiguration(pointSize: 60), tintColor: .systemGreen)
+    private let faceID = SystemImageButton(image: UIImage(systemName: "faceid"),size: UIImage.SymbolConfiguration(pointSize: 60), tintColor: .systemOrange)
     private let emailFieldView = View()
     private let emailTextField = TextField(placeHolder: "Enter your email", returnType: .next, keyboardType: .emailAddress)
     private let emailRequired = Label(text: "Required*", textColor: .systemRed, textFont: .bold(ofSize: 18))
@@ -246,14 +246,14 @@ class LoginViewController: UIViewController {
             print("Face ID not available on this device")
         }
     }
+    @objc func loginButtonTapped() {
+        let otpController = TodoListController()
+        navigationController?.pushViewController(otpController, animated: true)
+    }
     @objc func signupButtonTapped() {
         let goToSignupController = SignupController()
         navigationController?.pushViewController(goToSignupController, animated: true)
         changeState()
-    }
-    @objc func loginButtonTapped() {
-        let otpController = OTPViewController()
-        navigationController?.pushViewController(otpController, animated: true)
     }
 }
 

@@ -12,10 +12,10 @@ import FirebaseStorage
 class WorkListDetailsViewController: UIViewController {
     
     private let backgroundView = ImageView()
+    private let screentitle = Label(text: "Details",textFont: .bold())
     private let backButton = BackButton()
     private let statusView = View(backgroundColor: .systemPink.withAlphaComponent(0.3))
     private let currentstatus = Label(textFont: .bold(ofSize: 15))
-    private let screentitle = Label(text: "Details",textFont: .bold(ofSize: 40))
     private let headingTitle = Label(text: "Title:",textFont: .bold(ofSize: 25))
     private let workTitle = Label(text: "",textFont: .medium(ofSize: 23))
     private let headingDate = Label(text: "Work Date:",textFont: .bold(ofSize: 25))

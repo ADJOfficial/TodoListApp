@@ -14,7 +14,7 @@ class TodoListController: UIViewController {
 
     private let backgroundImageView = ImageView()
     private var loader = Loader()
-    private let screenTitle = Label(text: "Work List",textFont: .bold(ofSize: 40))
+    private let screenTitle = Label(text: "Work List",textFont: .bold())
     private let searchFieldView = View()
     private let searchTextField = SearchTextField()
     private let tableView = TableView()
@@ -96,7 +96,7 @@ class TodoListController: UIViewController {
             return
         }
         let collection = db.collection("users").document(currentUser).collection("work")
-        collection.order(by: "task_TimeStamp", descending: true).getDocuments { (snapshot, error) in
+        collection.order(by: "taskTimeStamp", descending: true).getDocuments { (snapshot, error) in
             if let error = error {
                 print("Failed to fetch tasks: \(error.localizedDescription)")
             } else {
@@ -105,23 +105,23 @@ class TodoListController: UIViewController {
                     return
                 }
                 self.tasks = snapshot.documents.map { doc in
-                    let taskTitle = doc.data()["task_Title"] as? String ?? ""
+                    let taskTitle = doc.data()["taskTitle"] as? String ?? ""
                     print("Title of Task is : ", taskTitle)
-                    let taskDescription = doc.data()["task_Description"] as? String ?? ""
+                    let taskDescription = doc.data()["taskDescription"] as? String ?? ""
                     print("Description of Task is : ", taskDescription)
-                    let date = doc.data()["task_Date"] as? String ?? ""
+                    let date = doc.data()["taskDate"] as? String ?? ""
                     print("Date is : ", date)
                     let documentID = doc.documentID
                     print("Document ID is :", documentID)
-                    let image = doc.data()["task_Image"] as? String ?? ""
+                    let image = doc.data()["taskImage"] as? String ?? ""
                     print("Image is : ", image)
-                    let status = doc.data()["task_currentStatus"] as? String ?? ""
+                    let status = doc.data()["taskcurrentStatus"] as? String ?? ""
                     print("Task Current Status is : \(status)")
-                    let timeStamp = doc.data()["task_TimeStamp"] as? String ?? ""
+                    let timeStamp = doc.data()["taskTimeStamp"] as? String ?? ""
                     print("Task TimeStamp is :", timeStamp)
                     self.scheduleNotification(taskTitle: taskTitle, taskDescription: taskDescription, date: date)
                     self.loader.stopAnimating()
-                    return WorkList(task_Title: taskTitle, task_Description: taskDescription, task_Date: date, task_Image: image, documentID: documentID, task_currentStatus: status, task_TimeStamp: timeStamp)
+                    return WorkList(taskTitle: taskTitle, taskDescription: taskDescription, taskDate: date, taskImage: image, documentID: documentID, taskcurrentStatus: status, taskTimeStamp: timeStamp)
                 }
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
@@ -192,18 +192,18 @@ class TodoListController: UIViewController {
 extension TodoListController: UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
      func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
          if let searchText = searchTextField.text, !searchText.isEmpty {
-             return tasks.filter { $0.task_Title.lowercased().contains(searchText.lowercased()) || $0.task_Description.lowercased().contains(searchText.lowercased()) || $0.task_Date.lowercased().contains(searchText.lowercased()) }.count
+             return tasks.filter { $0.taskTitle.lowercased().contains(searchText.lowercased()) || $0.taskDescription.lowercased().contains(searchText.lowercased()) }.count
          }
          return tasks.count
     }
      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! CustomTableViewCell
          let task = tasks.isEmpty ? tasks[indexPath.row] : tasks[indexPath.row]
-         cell.taskTitle.text = task.task_Title
-         cell.taskDescription.text = task.task_Description
-         cell.taskDate.text = task.task_Date
+         cell.taskTitle.text = task.taskTitle
+         cell.taskDescription.text = task.taskDescription
+         cell.taskDate.text = task.taskDate
          let storageRef = Storage.storage().reference()
-         let imageRef = storageRef.child(task.task_Image)
+         let imageRef = storageRef.child(task.taskImage)
          imageRef.getData(maxSize: 1 * 1024 * 1024) { data, error in
              if let error = error {
                  print("Error While Downloading Image \(error.localizedDescription)")
@@ -216,15 +216,15 @@ extension TodoListController: UITableViewDelegate, UITableViewDataSource, UIText
              }
          }
          let documentID = task.documentID
-         let status = task.task_currentStatus
-         let taskTimeStamp = task.task_TimeStamp
+         let status = task.taskcurrentStatus
+         let taskTimeStamp = task.taskTimeStamp
          if status == "Completed" {
-             cell.cellView.backgroundColor = .systemGreen.withAlphaComponent(0.2)
+             cell.cellView.backgroundColor = .systemGreen.withAlphaComponent(0.5)
          } else {
              cell.cellView.backgroundColor = .systemGray5.withAlphaComponent(0.5)
          }
          cell.didTapEditButton = {
-             let taskDate = self.changeDateTimeFormate(dateString: task.task_Date)
+             let taskDate = self.changeDateTimeFormate(dateString: task.taskDate)
              let editController = EditViewController(title: cell.taskTitle.text ?? "", description: cell.taskDescription.text ?? "", date: taskDate, image: cell.taskImage.image, documentID: documentID, taskTimeStamp: taskTimeStamp)
              self.navigationController?.pushViewController(editController, animated: true)
          }
@@ -244,7 +244,7 @@ extension TodoListController: UITableViewDelegate, UITableViewDataSource, UIText
                  return
              }
              let collection = self.db.collection("users").document(currentUser).collection("work")
-             let alert = UIAlertController(title: "Delete Task", message: "Are You Sure You Want to Delete This Task: \(task.task_Title)", preferredStyle: .alert)
+             let alert = UIAlertController(title: "Delete Task", message: "Are You Sure You Want to Delete This Task: \(task.taskTitle)", preferredStyle: .alert)
              alert.addAction(UIAlertAction(title: "Delete", style: .destructive) {_ in
                  collection.document(documentID).delete { error in
                      if let error = error {
@@ -270,5 +270,4 @@ extension TodoListController: UITableViewDelegate, UITableViewDataSource, UIText
         textField.resignFirstResponder()
         return true
     }
-
 }

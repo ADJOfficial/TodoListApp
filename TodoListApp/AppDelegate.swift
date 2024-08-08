@@ -36,10 +36,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate, UNUser
         print("This Func is called \(#function)")
         return true
     }
-//    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
-//        if Auth.auth().canHandleNotification(userInfo) {
-//            Auth.auth().canHandleNotification(userInfo)
-//            return
-//        }
-//    }
 }
