@@ -15,7 +15,7 @@ class AddItemController: UIViewController {
     private let backgroundImageView = ImageView()
     private let backButton = BackButton()
     private let screenTitle = Label(text: "New Work", textFont: .bold())
-    private let titleView = View()
+    private let titleView = View(backgroundColor: .systemBlue)
     private let titleTextField = TextField(placeHolder: "Enter task title", returnType: .next)
     private let descriptionView = View()
     private let descriptionTextField = TextField(placeHolder: "Enter task description", returnType: .done)
@@ -24,15 +24,22 @@ class AddItemController: UIViewController {
     private let imagePickerView = ImagePickerView(backgroundColor: .clear)
     private let addButton = Button(setTitle: "Add")
     
+    private var titleTextFieldButtonConstraints: NSLayoutConstraint?
     private var db = Firestore.firestore()
     private let imagePicker = UIImagePickerController()
     
     override func viewDidLoad() {
         setupViews()
         addTarget()
+//        textfieldEvents()
         titleTextField.delegate = self
         descriptionTextField.delegate = self
         addButton.isUserInteractionEnabled = false
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHidden), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
@@ -98,6 +105,8 @@ class AddItemController: UIViewController {
             imagePickerView.topAnchor.constraint(equalTo: uploadImage.bottomAnchor, constant: 5),
             imagePickerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 25),
         ])
+        titleTextFieldButtonConstraints = titleTextField.bottomAnchor.constraint(equalTo: titleView.bottomAnchor)
+        titleTextFieldButtonConstraints?.isActive = true
     }
     private func addTarget() {
         backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
@@ -109,7 +118,10 @@ class AddItemController: UIViewController {
         uploadImage.addGestureRecognizer(tappedImageView)
         uploadImage.isUserInteractionEnabled = true
     }
-
+//    func textfieldEvents(){
+//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHidden), name: UIResponder.keyboardWillHideNotification, object: nil)
+//    }
     @objc func addItem() {
         guard let currentUser = Auth.auth().currentUser?.uid else{
             return
@@ -183,6 +195,38 @@ class AddItemController: UIViewController {
     }
     @objc func backButtonTapped() {
         navigationController?.popViewController(animated: true)
+    }
+
+
+    @objc private func keyboardWillShow(_ notification: NSNotification) {
+        if titleTextField.isEditing {
+            updateViewWithKeyboard(notification: notification, viewBottomConstrainst: self.titleTextFieldButtonConstraints!, keyboardWillShow: true)
+        }
+    }
+    @objc private func keyboardWillHidden(_ notification: NSNotification) {
+        updateViewWithKeyboard(notification: notification, viewBottomConstrainst: self.titleTextFieldButtonConstraints!, keyboardWillShow: false)
+    }
+    private func updateViewWithKeyboard(notification: NSNotification, viewBottomConstrainst: NSLayoutConstraint, keyboardWillShow: Bool) {
+        guard let userInfo = notification.userInfo, let keyboardSize = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
+            return
+        }
+        guard let keyboardDuration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double else {
+            return
+        }
+        guard let keyboardCurve = UIView.AnimationCurve(rawValue: userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as! Int) else {
+            return
+        }
+        let keyboardHeight = keyboardSize.cgRectValue.height
+        
+        if keyboardWillShow {
+            viewBottomConstrainst.constant = -(keyboardHeight + 50)
+        } else {
+            viewBottomConstrainst.constant = -(keyboardHeight - 50)
+        }
+        let animator = UIViewPropertyAnimator(duration: keyboardDuration, curve: keyboardCurve) {
+            [weak self] in self?.view.layoutIfNeeded()
+        }
+        animator.startAnimation()
     }
 }
 

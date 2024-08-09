@@ -166,7 +166,7 @@ class WorkListDetailsViewController: UIViewController {
                 print("Error While Uploading Image\(error.localizedDescription)")
             }
         }
-        let taskData = ["task_Title": taskName, "task_Description": taskDescription, "task_Date": taskDate,"task_Image": path,"task_currentStatus": "Completed", "task_TimeStamp": timeStamp] as [String : Any]
+        let taskData = ["taskTitle": taskName, "taskDescription": taskDescription, "taskDate": taskDate,"taskImage": path,"taskcurrentStatus": "Completed", "taskTimeStamp": timeStamp] as [String : Any]
         updateTask.document(taskDocumentID).setData(taskData) { error in
             if let error = error {
                 print("Task Not Updated: \(error.localizedDescription)")

@@ -23,6 +23,8 @@ class TodoListController: UIViewController {
    
     private let db = Firestore.firestore()
     private var tasks: [WorkList] = []
+    private var filteredTask: [WorkList] = []
+    private var isSearching = false
     private let cellIdentifier = "cell"
     
     override func viewDidLoad() {
@@ -182,23 +184,26 @@ class TodoListController: UIViewController {
     }
     @objc func searchTextDidChanged() {
         guard let searchText = searchTextField.text, !searchText.isEmpty else {
+            isSearching = false
             tableView.reloadData()
             return
         }
+        isSearching = true
+        filteredTask = tasks.filter { $0.taskTitle.lowercased().contains(searchText.lowercased())}
         tableView.reloadData()
     }
 }
 
 extension TodoListController: UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
      func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-         if let searchText = searchTextField.text, !searchText.isEmpty {
-             return tasks.filter { $0.taskTitle.lowercased().contains(searchText.lowercased()) || $0.taskDescription.lowercased().contains(searchText.lowercased()) }.count
-         }
-         return tasks.count
+//         if let searchText = searchTextField.text, !searchText.isEmpty {
+//             return tasks.filter { $0.taskTitle.lowercased().contains(searchText.lowercased()) || $0.taskDescription.lowercased().contains(searchText.lowercased()) }.count
+//         }
+         return isSearching ? filteredTask.count : tasks.count
     }
      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! CustomTableViewCell
-         let task = tasks.isEmpty ? tasks[indexPath.row] : tasks[indexPath.row]
+         let task = isSearching ? filteredTask[indexPath.row] : tasks[indexPath.row]
          cell.taskTitle.text = task.taskTitle
          cell.taskDescription.text = task.taskDescription
          cell.taskDate.text = task.taskDate
@@ -236,6 +241,11 @@ extension TodoListController: UITableViewDelegate, UITableViewDataSource, UIText
              guard let indexPath = tableView.indexPath(for: cell) else {
                  return
              }
+//             if self.isSearching {
+//                 self.filteredTask[indexPath.row]
+//             } else {
+//                 self.tasks[indexPath.row]
+//             }
              print("Geoooo \(indexPath)")
              let task = self.tasks[indexPath.row]
              let documentID = task.documentID

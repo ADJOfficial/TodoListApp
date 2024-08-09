@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate, UNUser
         application.registerForRemoteNotifications()
         
         window = UIWindow(frame: UIScreen.main.bounds)
-        let nav = UINavigationController(rootViewController: OTPViewController())
+        let nav = UINavigationController(rootViewController: TodoListController())
         window?.rootViewController = nav
         nav.setNavigationBarHidden(true, animated: false)
         window?.makeKeyAndVisible()

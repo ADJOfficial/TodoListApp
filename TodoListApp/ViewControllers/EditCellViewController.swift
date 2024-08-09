@@ -49,6 +49,7 @@ class EditViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         addTargets()
+        setupKeyboardLayout()
         titleTextField.delegate = self
         descriptionTextField.delegate = self
         self.titleTextField.text = taskTitle

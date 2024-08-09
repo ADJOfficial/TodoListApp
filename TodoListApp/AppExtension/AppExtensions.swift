@@ -37,8 +37,8 @@ extension UIViewController {
         guard let userInfo = notification.userInfo, let keyboardFrame = userInfo[responderKeyBoardType] as? NSValue else {
             return
         }
-        let keyboardIsHidden = view.frame.origin.y == 0
-        if keyboardIsHidden {
+        let keyboardisShowing = view.frame.origin.y == 0
+        if keyboardisShowing {
             view.frame.origin.y -= keyboardFrame.cgRectValue.height
         }
     }
