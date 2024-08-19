@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class SignupController: UIViewController {
+class SignupViewController: UIViewController {
     private let backgroundImageView = ImageView()
     private let backButton = BackButton()
     private let titleLabel = Label(text: "Sign up",textFont: .bold())
@@ -205,7 +205,7 @@ class SignupController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
 }
-extension SignupController: UITextFieldDelegate {
+extension SignupViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == emailTextField {
             passwordTextField.becomeFirstResponder()

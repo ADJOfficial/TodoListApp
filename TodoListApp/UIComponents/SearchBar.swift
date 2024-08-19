@@ -9,7 +9,7 @@ import UIKit
 
 class SearchTextField: UITextField {
     
-    init(backgroundColor: UIColor = .systemGray4, cornorRadius: CGFloat = 22, placeHolder: String = "Search task", returnType: UIReturnKeyType = .default) {
+    init(backgroundColor: UIColor = .systemGray4, cornorRadius: CGFloat = 22, placeHolder: String = "Search task", returnType: UIReturnKeyType = .search) {
         super.init(frame: .zero)
         self.translatesAutoresizingMaskIntoConstraints = false
         self.backgroundColor = backgroundColor
@@ -21,4 +21,8 @@ class SearchTextField: UITextField {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+}
+
+class SearchBar: UISearchBar {
+    init(backgroundColor: UIColor = .systemGray3, placeholder: String = "Search", isTrai)
 }
