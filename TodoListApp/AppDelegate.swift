@@ -7,7 +7,6 @@
 
 import UIKit
 import Firebase
-import UserNotifications
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate, UNUserNotificationCenterDelegate {
@@ -16,24 +15,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate, UNUser
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
+        window = UIWindow(frame: UIScreen.main.bounds)
+        let nav = UINavigationController(rootViewController: WelcomeViewController())
+        window?.rootViewController = nav
+        nav.setNavigationBarHidden(true, animated: false)
+        window?.makeKeyAndVisible()
+        configureNotification()
+        application.registerForRemoteNotifications()
+        print("This Func Called : \(#function)")
+        return true
+    }
+    private func configureNotification() {
         Messaging.messaging().delegate = self
         UNUserNotificationCenter.current().delegate = self
-        
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { success , error in
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { success, error in
             guard success else {
                 print("Notification Permission Denied")
                 return
             }
             print("Notification Permission Granted")
         }
-        application.registerForRemoteNotifications()
-        
-        window = UIWindow(frame: UIScreen.main.bounds)
-        let nav = UINavigationController(rootViewController: TodoListController())
-        window?.rootViewController = nav
-        nav.setNavigationBarHidden(true, animated: false)
-        window?.makeKeyAndVisible()
-        print("This Func is called \(#function)")
-        return true
     }
 }

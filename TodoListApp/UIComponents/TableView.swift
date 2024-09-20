@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TableView: UITableView {
+class TableView: UITableView  {
     init(backgroundColor: UIColor = .clear, separatorStyle: UITableViewCell.SeparatorStyle = .none){
         super.init(frame: .zero, style: .plain)
         self.translatesAutoresizingMaskIntoConstraints = false

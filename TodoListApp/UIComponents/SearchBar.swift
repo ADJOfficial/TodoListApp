@@ -7,22 +7,19 @@
 
 import UIKit
 
-class SearchTextField: UITextField {
-    
-    init(backgroundColor: UIColor = .systemGray4, cornorRadius: CGFloat = 22, placeHolder: String = "Search task", returnType: UIReturnKeyType = .search) {
+class SearchBar: UISearchBar {
+    init(backgroundColor: UIColor = .systemGray2, cornerRadius: CGFloat = 22, placeholder: String = "Search") {
         super.init(frame: .zero)
         self.translatesAutoresizingMaskIntoConstraints = false
         self.backgroundColor = backgroundColor
-        self.layer.cornerRadius = cornorRadius
-        self.placeholder = placeHolder
-        self.clearButtonMode = .whileEditing
-        self.returnKeyType = returnType
+        self.layer.cornerRadius = cornerRadius
+        self.placeholder = placeholder
+        self.searchBarStyle = .minimal
+        self.sizeToFit()
+        self.isTranslucent = true
     }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-}
-
-class SearchBar: UISearchBar {
-    init(backgroundColor: UIColor = .systemGray3, placeholder: String = "Search", isTrai)
 }

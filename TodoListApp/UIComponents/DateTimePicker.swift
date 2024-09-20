@@ -8,12 +8,16 @@
 import UIKit
 
 class DateTimePicker: UIDatePicker {
-    init(){
+    init(minimumDate: Date? = Date()){
         super.init(frame: .zero)
         self.translatesAutoresizingMaskIntoConstraints = false
-        self.locale = Locale(identifier: "en_US")
-        self.minimumDate = Date()
-//        self.minimumDate = timeZone
+        self.locale = .current
+        self.datePickerMode = .dateAndTime
+        self.minimumDate = minimumDate
+        self.layer.cornerRadius = 10
+        self.layer.masksToBounds = true
+        self.backgroundColor = .black.withAlphaComponent(0.5)
+        self.tintColor = .systemGreen
         self.preferredDatePickerStyle = .compact
     }
     

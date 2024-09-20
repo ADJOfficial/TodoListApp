@@ -4,7 +4,10 @@
 //
 //  Created by Arsalan Daud on 19/07/2024.
 //
+
 import UIKit
+import KeychainSwift
+
 // MARK: For Label Text Font Size Almost Used on All View
 extension UIFont {
     static func medium(ofSize: CGFloat) -> UIFont {
@@ -17,49 +20,46 @@ extension UIFont {
         return UIFont.systemFont(ofSize: ofSize, weight: .bold)
     }
 }
-// MARK: UIImage Used on Todolist Screen
-extension UIImage {
-    static func systemName(name: String = "plus.circle.fill") -> UIImage {
-        return UIImage(systemName: name) ?? UIImage()
-    }
-    static func imageSize(size: CGFloat = 40) -> UIImage.SymbolConfiguration {
-        return UIImage.SymbolConfiguration(pointSize: size)
-    }
-}
-// MARK: For KeyboardAppear Event
-extension UIViewController {
-    func setupKeyboardLayout() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHidden), name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-    @objc private func keyboardWillShow(notification: Notification) {
-        let responderKeyBoardType = UIResponder.keyboardFrameEndUserInfoKey
-        guard let userInfo = notification.userInfo, let keyboardFrame = userInfo[responderKeyBoardType] as? NSValue else {
-            return
-        }
-        let keyboardisShowing = view.frame.origin.y == 0
-        if keyboardisShowing {
-            view.frame.origin.y -= keyboardFrame.cgRectValue.height
-        }
-    }
-    @objc private func keyboardWillHidden(notification: Notification) {
-        let keyboardIsHidden = view.frame.origin.y == 0
-        if !keyboardIsHidden {
-            view.frame.origin.y = 0
-        }
-    }
-}
 // MARK: AutoSized According to Screen Size
 extension Int {
     var autoSized: CGFloat {
-        let screenWidth = UIScreen.main.bounds.size.width
-        let screenHeight = UIScreen.main.bounds.size.height
-        let diagonalSize = sqrt((screenWidth * screenWidth) + (screenHeight * screenHeight))
-        let percentage = CGFloat(self)/980.0
-        return diagonalSize * percentage/100
+        let baseDiagonal: CGFloat = 980.0
+        let screenDiagonal = sqrt(pow(UIScreen.main.bounds.width, 2) + pow(UIScreen.main.bounds.height, 2))
+        let scale = screenDiagonal / baseDiagonal
+        return CGFloat(self) * scale
     }
     var widthRatio: CGFloat {
-        let width = UIScreen.main.bounds.width/414.0
-        return CGFloat(self)*width
+        let baseWidth: CGFloat = 414.0
+        let screenWidth = UIScreen.main.bounds.width
+        let scale = screenWidth / baseWidth
+        return CGFloat(self) * scale
+    }
+}
+
+// MARK: For Save Credentials in KeyChain
+extension UIViewController {
+    func storeCredentials(email: String, password: String) {
+        let keychain = KeychainSwift()
+        keychain.set(email, forKey: "userEmail")
+        keychain.set(password, forKey: "userPassword")
+        print("Stored User Credentails with email \(email) and password \(password)")
+    }
+    func retrieveCredentials() -> (email: String?, password: String?) {
+        let keychain = KeychainSwift()
+        let email = keychain.get("userEmail")
+        let password = keychain.get("userPassword")
+        print("Fetched User With Email : \(email ?? "") and Password \(password ?? "")")
+        return (email, password)
+    }
+}
+// MARK: For Alerts
+extension UIViewController {
+    func popupAlert(title: String?, message: String?, style: UIAlertController.Style = .alert, actionTitles: [String?], actionStyles: [UIAlertAction.Style?], actions: [((UIAlertAction) -> Void)?]) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: style)
+        for (index, title) in actionTitles.enumerated() {
+            let action = UIAlertAction(title: title, style: .default, handler: actions[index])
+            alert.addAction(action)
+        }
+        self.present(alert, animated: true, completion: nil)
     }
 }

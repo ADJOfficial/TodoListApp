@@ -9,11 +9,10 @@ import UIKit
 
 class ImagePickerView: UIImageView {
     var imageName: String = "" {
-        didSet {
+        didSet { // MARK: didSet is an Property Observer
             self.image = UIImage(named: imageName)
         }
     }
-    
     init(backgroundColor: UIColor = .systemGray3, imageName: String = "", cornerRadius: CGFloat = 22, aspectRatio: ContentMode = .scaleAspectFill, bounds: Bool = true){
         super.init(frame: .zero)
         self.translatesAutoresizingMaskIntoConstraints = false

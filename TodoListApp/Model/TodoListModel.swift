@@ -7,12 +7,13 @@
 
 import Foundation
 
-struct WorkList {
+struct TodoListModel {
     let taskTitle: String
     let taskDescription: String
     let taskDate: String
     let taskImage: String
     let documentID: String
+    var taskEdited: Bool
     let taskcurrentStatus: String
     let taskTimeStamp: String
 }

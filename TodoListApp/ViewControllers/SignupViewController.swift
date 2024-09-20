@@ -7,210 +7,174 @@
 
 
 import UIKit
-import Firebase
+import FirebaseAuth
 
-class SignupViewController: UIViewController {
-    private let backgroundImageView = ImageView()
+class SignupViewController: BaseViewController {
     private let backButton = BackButton()
-    private let titleLabel = Label(text: "Sign up",textFont: .bold())
+    private let screenLabel = Label(text: "Sign up", textFont: .bold())
     private let headingLabel = Label(text: "Create an account",textFont: .bold(ofSize: 20))
     private let descriptionLabel = Label(text: "Please Sign up to continue", textFont: .regular(ofSize: 15))
-    private let emailFieldView = View()
-    private let emailTextField = TextField(placeHolder: "Enter your email", returnType: .next, keyboardType: .emailAddress)
-    private let emailRequired = Label(text: "Required*", textColor: .systemRed, textFont: .bold(ofSize: 18))
-    private let passwordFieldView = View()
-    private let passwordTextField = TextField(placeHolder: "Enter your password", isSecure: true, returnType: .done)
+    private let emailTextFieldView = TextFieldView(placeholder: "Enter your email", returnType: .next, keyboardType: .emailAddress)
+    private let passwordTextFieldView = TextFieldView(placeholder: "Enter your password", isSecure: true, returnType: .done)
     private let showPassword = SystemImageButton(image: UIImage(systemName: "eye"), tintColor: .gray)
-    private let passwordRequired = Label(text: "Required*", textColor: .systemRed, textFont: .bold(ofSize: 18))
     private let signupButton = Button(setTitle: "Sign up")
-    private let accountLabel = Label(text: "Already have a account?", textFont: .bold(ofSize: 15))
-    private let loginButton = Button(backgroungColor: .clear, cornerRadius: 0, setTitle: "Login", setTitleColor: .blue)
+    private let accountLabel = Label(text: "Already have a account?", textFont: .medium(ofSize: 18))
+    private let signinLabel = Label(text: "Login", textFont: .bold(ofSize: 20))
 
+    var headingLabelTopContraints: NSLayoutConstraint?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupViews()
-        buttonTarget()
-        setupKeyboardLayout()
-        emailTextField.delegate = self
-        passwordTextField.delegate = self
+        addTarget()
+        addObserver()
         signupButton.alpha = 0.5
         signupButton.isUserInteractionEnabled = false
+        signinLabel.isUserInteractionEnabled = true
+        emailTextFieldView.textField.delegate = self
+        passwordTextFieldView.textField.delegate = self
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
     }
     
-    private func setupViews() {
-        view.addSubview(backgroundImageView)
-        view.addSubview(titleLabel)
+    override func setupViews() {
+        super.setupViews()
+        view.addSubview(screenLabel)
         view.addSubview(backButton)
         view.addSubview(headingLabel)
         view.addSubview(descriptionLabel)
-        view.addSubview(emailFieldView)
-        emailFieldView.addSubview(emailTextField)
-        view.addSubview(emailRequired)
-        view.addSubview(passwordFieldView)
-        passwordFieldView.addSubview(passwordTextField)
+        view.addSubview(emailTextFieldView)
+        view.addSubview(passwordTextFieldView)
         view.addSubview(showPassword)
-        view.addSubview(passwordRequired)
         view.addSubview(signupButton)
         view.addSubview(accountLabel)
-        view.addSubview(loginButton)
+        view.addSubview(signinLabel)
         
         NSLayoutConstraint.activate([
-            backgroundImageView.topAnchor.constraint(equalTo: view.topAnchor),
-            backgroundImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            backgroundImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            backgroundImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-
-            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            screenLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            screenLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             
-            backButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor , constant: 20),
-            backButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            backButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5.autoSized),
+            backButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -5.widthRatio),
 
-            headingLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            headingLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -125),
+            headingLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 25.widthRatio),
             
             descriptionLabel.topAnchor.constraint(equalTo: headingLabel.bottomAnchor),
-            descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 25.widthRatio),
             
-            emailFieldView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            emailFieldView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            emailFieldView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            emailFieldView.heightAnchor.constraint(equalToConstant: 50),
-           
-            emailTextField.leadingAnchor.constraint(equalTo: emailFieldView.leadingAnchor, constant: 20),
-            emailTextField.trailingAnchor.constraint(equalTo: emailFieldView.trailingAnchor, constant: -20),
-            emailTextField.topAnchor.constraint(equalTo: emailFieldView.topAnchor),
-            emailTextField.bottomAnchor.constraint(equalTo: emailFieldView.bottomAnchor),
-
-            emailRequired.topAnchor.constraint(equalTo: emailFieldView.bottomAnchor, constant: 5),
-            emailRequired.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 25),
+            emailTextFieldView.heightAnchor.constraint(equalToConstant: 50.autoSized),
+            emailTextFieldView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 25.autoSized),
+            emailTextFieldView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 25.widthRatio),
+            emailTextFieldView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25.widthRatio),
             
-            passwordFieldView.topAnchor.constraint(equalTo: emailRequired.bottomAnchor, constant: 20),
-            passwordFieldView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            passwordFieldView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            passwordFieldView.heightAnchor.constraint(equalToConstant: 50),
-            
-            passwordTextField.leadingAnchor.constraint(equalTo: passwordFieldView.leadingAnchor, constant: 20),
-            passwordTextField.trailingAnchor.constraint(equalTo: passwordFieldView.trailingAnchor, constant: -20),
-            passwordTextField.topAnchor.constraint(equalTo: passwordFieldView.topAnchor),
-            passwordTextField.bottomAnchor.constraint(equalTo: passwordFieldView.bottomAnchor),
+            passwordTextFieldView.heightAnchor.constraint(equalToConstant: 50.autoSized),
+            passwordTextFieldView.topAnchor.constraint(equalTo: emailTextFieldView.bottomAnchor, constant: 25.autoSized),
+            passwordTextFieldView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 25.widthRatio),
+            passwordTextFieldView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25.widthRatio),
   
-            showPassword.topAnchor.constraint(equalTo: passwordTextField.topAnchor),
-            showPassword.bottomAnchor.constraint(equalTo: passwordTextField.bottomAnchor),
-            showPassword.trailingAnchor.constraint(equalTo: passwordTextField.trailingAnchor),
+            showPassword.topAnchor.constraint(equalTo: passwordTextFieldView.topAnchor),
+            showPassword.bottomAnchor.constraint(equalTo: passwordTextFieldView.bottomAnchor),
+            showPassword.trailingAnchor.constraint(equalTo: passwordTextFieldView.trailingAnchor, constant: -15.widthRatio),
             
-            passwordRequired.topAnchor.constraint(equalTo: passwordFieldView.bottomAnchor, constant: 5),
-            passwordRequired.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 25),
-            
-            signupButton.widthAnchor.constraint(equalToConstant: 150),
-            signupButton.heightAnchor.constraint(equalToConstant: 50),
-            signupButton.topAnchor.constraint(equalTo: passwordFieldView.topAnchor, constant: 80),
-            signupButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            signupButton.widthAnchor.constraint(equalToConstant: 150.widthRatio),
+            signupButton.heightAnchor.constraint(equalToConstant: 50.autoSized),
+            signupButton.topAnchor.constraint(equalTo: passwordTextFieldView.bottomAnchor, constant: 25.autoSized),
+            signupButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20.widthRatio),
  
-            accountLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             accountLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            accountLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
 
-            loginButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 8),
-            loginButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -65),
+            signinLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 1.autoSized),
+            signinLabel.leadingAnchor.constraint(equalTo: accountLabel.trailingAnchor, constant: 10.widthRatio),
         ])
+        headingLabelTopContraints = headingLabel.topAnchor.constraint(equalTo: view.centerYAnchor, constant: -25.autoSized)
+        headingLabelTopContraints?.isActive = true
     }
-    private func buttonTarget() {
-        backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+    private func addTarget() {
+        backButton.addTarget(self, action: #selector(didBackButtonTapped), for: .touchUpInside)
         showPassword.addTarget(self, action: #selector(eyeButtonTapped), for: .touchUpInside)
         signupButton.addTarget(self, action: #selector(userSignup), for: .touchUpInside)
-        loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
-        emailTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
-        passwordTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+        emailTextFieldView.textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+        passwordTextFieldView.textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(didSiginLabelTapped))
+        signinLabel.addGestureRecognizer(gesture)
     }
-    private func validateEmail() {
-        if let email = emailTextField.text, !email.isEmpty {
-            if isValidEmail(email: email) {
-                emailRequired.text = "Valid Email"
-                emailRequired.textColor = .systemBlue
-            } else {
-                emailRequired.text = "Invalid Email"
-                emailRequired.textColor = .systemRed
-            }
-        }
-        else {
-            emailRequired.text = "Required*"
-        }
+    private func addObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHidden), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     private func isValidEmail(email: String) -> Bool {
-        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[com]{2,64}"
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[com]{2,3}"
         let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegEx)
         return emailPredicate.evaluate(with: email)
-    }
-    private func validatePassword() {
-        if let password = passwordTextField.text, !password.isEmpty {
-            if isValidPassword(password: password) {
-                passwordRequired.text = "Valid Password"
-                passwordRequired.textColor = .systemBlue
-            } else {
-                passwordRequired.text = "Invalid Password"
-                passwordRequired.textColor = .systemRed
-            }
-        }
     }
     private func isValidPassword(password: String) -> Bool {
         let passwordRegEx = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8}$"
         let predicate = NSPredicate(format: "SELF MATCHES %@", passwordRegEx)
         return predicate.evaluate(with: password)
     }
-    
+
     @objc func eyeButtonTapped() {
-        passwordTextField.isSecureTextEntry.toggle()
-        let image = passwordTextField.isSecureTextEntry ? "eye" : "eye.fill"
+        passwordTextFieldView.textField.isSecureTextEntry.toggle()
+        let image = passwordTextFieldView.textField.isSecureTextEntry ? "eye" : "eye.fill"
         showPassword.setImage(UIImage(systemName: image), for: .normal)
     }
     @objc func textFieldDidChange() {
-        if emailTextField.isFirstResponder {
-            validateEmail()
-        } else if passwordTextField.isFirstResponder {
-            validatePassword()
-        }
-        let isSignupEnabled = emailRequired.textColor == .systemBlue && passwordRequired.textColor == .systemBlue
+        let isSignupEnabled = isValidEmail(email: emailTextFieldView.textField.text ?? "") && isValidPassword(password: passwordTextFieldView.textField.text ?? "")
         signupButton.isUserInteractionEnabled = isSignupEnabled
         signupButton.alpha = isSignupEnabled ? 1.0 : 0.5
     }
     @objc func userSignup() {
-        Auth.auth().createUser(withEmail: emailTextField.text ?? "", password: passwordTextField.text ?? "") { result, error in
+        guard let email = emailTextFieldView.textField.text, let password = passwordTextFieldView.textField.text else {
+            return
+        }
+        Auth.auth().createUser(withEmail: email, password: password) { result, error in
             if let error = error {
-                print("Sigup failed: \(error.localizedDescription)")
-                let alert = UIAlertController(title: "Signup Failed", message: error.localizedDescription, preferredStyle: .actionSheet)
-                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                self.present(alert, animated: true, completion: nil)
+                print("Signup failed: \(error.localizedDescription)")
+                self.popupAlert(title: "Signup Failed", message: error.localizedDescription, style: .actionSheet, actionTitles: ["Try Again"], actionStyles: [.cancel], actions: [{ action in
+                    print("Try Again")
+                }])
             } else {
-                print("You Have Sign up successfully")
-                let alert = UIAlertController(title: "Sign up Successful", message: "Tap on ok to Sign in", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "OK", style: .default) {_ in
-                    self.navigationController?.popViewController(animated: true)
-                })
-                self.present(alert, animated: true, completion: nil)
-            }
-            DispatchQueue.main.async {
-                self.signupButton.alpha = 0.5
-                self.emailTextField.text = ""
-                self.passwordTextField.text = ""
+                print("You have signed up successfully")
+                self.storeCredentials(email: email, password: password)
+                self.popupAlert(title: "Sign up Successful", message: "One step left You need to signin to your app", actionTitles: ["Sigin Now"], actionStyles: [.default], actions: [{ action in
+                    let siginController = SigninViewController()
+                    self.navigationController?.pushViewController(siginController, animated: true)
+                }])
             }
         }
     }
-    @objc func loginButtonTapped() {
+    @objc func keyboardWillShow(notification: Notification) {
+        let keyboardisShowing = view.frame.origin.y == 0
+        if keyboardisShowing {
+            UIView.animate(withDuration: 0.4) {
+                self.headingLabelTopContraints?.constant = -180
+                self.view.layoutIfNeeded()
+            }
+        }
+    }
+    @objc func keyboardWillHidden(notification: Notification) {
+        let keyboardIsHidden = view.frame.origin.y == 0
+        if keyboardIsHidden {
+            UIView.animate(withDuration: 0.2) {
+                self.headingLabelTopContraints?.constant = -25
+                self.view.layoutIfNeeded()
+            }
+        }
+    }
+    @objc func didSiginLabelTapped() {
         navigationController?.popViewController(animated: true)
     }
-    @objc func backButtonTapped() {
+    @objc func didBackButtonTapped() {
         navigationController?.popViewController(animated: true)
     }
 }
 extension SignupViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if textField == emailTextField {
-            passwordTextField.becomeFirstResponder()
-        }else {
-            passwordTextField.resignFirstResponder()
+        if textField == emailTextFieldView.textField {
+            passwordTextFieldView.textField.becomeFirstResponder()
+        } else {
+            passwordTextFieldView.textField.resignFirstResponder()
         }
         return true
     }

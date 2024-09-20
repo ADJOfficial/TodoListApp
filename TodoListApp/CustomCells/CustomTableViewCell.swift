@@ -8,15 +8,15 @@
 import UIKit
 
 class CustomTableViewCell: UITableViewCell {
-    
-    let cellView = GradientView()
-    private let detailsIcon = SystemImageButton(image: UIImage(systemName: "info.circle"), tintColor: .systemBlue)
-    private let editView = EditUIView()
+    let cellView = GradientLayer()
+    private let detailsIcon = SystemImageButton(image: UIImage(systemName: "info.circle"), tintColor: .white)
+    private let editView = EditTodoListView()
     private let deleteIcon = SystemImageButton(image: UIImage(systemName: "trash.fill"), tintColor: .red)
-    let taskTitle = Label(textColor: .darkGray, textFont: .bold(ofSize: 30))
-    let taskDescription = Label(textFont: .bold(ofSize: 20))
+    let taskTitle = Label(text: "" , textColor: .darkGray, textFont: .bold(ofSize: 30))
+    let editedWork = Label(text: "" , textFont: .medium(ofSize: 15))
+    let taskDescription = Label(text: "", textFont: .bold(ofSize: 20))
     let taskImage = ImagePickerView()
-    let taskDate = Label(textFont: .bold(ofSize: 15))
+    let taskDate = Label(text: "", textFont: .bold(ofSize: 15))
     
     var didTapEditButton: (()->Void)?
     var didDetailsIconTapped: (()-> Void)?
@@ -35,57 +35,52 @@ class CustomTableViewCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-//    override func layoutSubviews() {
-//        super.layoutSubviews()
-//        cellView.layer.sublayers?.first?.frame = cellView.bounds
-//    }
+    
     private func setupCell() {
         addSubview(cellView)
         cellView.addSubview(detailsIcon)
         cellView.addSubview(taskTitle)
+        cellView.addSubview(editedWork)
         cellView.addSubview(taskDescription)
         cellView.addSubview(editView)
 //        cellView.addSubview(taskImage)
 //        cellView.addSubview(taskDate)
-//        cellView.addSubview(editView)
-//        editView.addSubview(editLabel)
-//        editView.addSubview('editIcon')
         cellView.addSubview(deleteIcon)
+        
         NSLayoutConstraint.activate([
-//            cellView.widthAnchor.constraint(equalToConstant: 300),
-//            cellView.heightAnchor.constraint(equalToConstant: 200),
             cellView.topAnchor.constraint(equalTo: self.topAnchor),
-            cellView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -25),
+            cellView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -25.autoSized),
             cellView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             cellView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-//            cellView.topAnchor.constraint(equalTo: self.topAnchor),
-//            cellView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -25),
             
-            detailsIcon.topAnchor.constraint(equalTo: cellView.topAnchor, constant: 20),
-            detailsIcon.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: -25),
+            detailsIcon.topAnchor.constraint(equalTo: cellView.topAnchor, constant: 20.autoSized),
+            detailsIcon.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: -25.widthRatio),
             
-            taskTitle.topAnchor.constraint(equalTo: cellView.topAnchor, constant: 10),
-            taskTitle.leadingAnchor.constraint(equalTo: cellView.leadingAnchor , constant: 20),
+            taskTitle.topAnchor.constraint(equalTo: cellView.topAnchor, constant: 10.autoSized),
+            taskTitle.leadingAnchor.constraint(equalTo: cellView.leadingAnchor , constant: 20.widthRatio),
             
-            taskDescription.topAnchor.constraint(equalTo: taskTitle.bottomAnchor, constant: 20),
-            taskDescription.leadingAnchor.constraint(equalTo: cellView.leadingAnchor, constant: 25),
-            taskDescription.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: -20),
+            editedWork.topAnchor.constraint(equalTo: cellView.topAnchor, constant: 5.autoSized),
+            editedWork.centerXAnchor.constraint(equalTo: cellView.centerXAnchor),
             
-//            taskImage.widthAnchor.constraint(equalToConstant: 250),
-//            taskImage.heightAnchor.constraint(equalToConstant: 200),
-//            taskImage.topAnchor.constraint(equalTo: taskDescription.bottomAnchor, constant: 20),
-//            taskImage.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: -25),
-//            
+            
+            taskDescription.topAnchor.constraint(equalTo: taskTitle.bottomAnchor),
+            taskDescription.leadingAnchor.constraint(equalTo: cellView.leadingAnchor, constant: 20.widthRatio),
+            taskDescription.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: -20.widthRatio),
+            
+//            taskImage.widthAnchor.constraint(equalToConstant: 150.widthRatio),
+//            taskImage.heightAnchor.constraint(equalToConstant: 100.autoSized),
+//            taskImage.bottomAnchor.constraint(equalTo: cellView.bottomAnchor, constant: -25.autoSized),
+//            taskImage.trailingAnchor.constraint(equalTo: deleteIcon.trailingAnchor, constant: -25.widthRatio),
+            
 //            taskDate.topAnchor.constraint(equalTo: taskDescription.bottomAnchor,constant: 25),
 //            taskDate.leadingAnchor.constraint(equalTo: cellView.leadingAnchor,constant: 25),
             
-            deleteIcon.topAnchor.constraint(equalTo: taskDescription.bottomAnchor, constant: 25),
-            deleteIcon.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: -25),
-            deleteIcon.bottomAnchor.constraint(equalTo: cellView.bottomAnchor, constant: -25),
+            deleteIcon.topAnchor.constraint(equalTo: taskDescription.bottomAnchor, constant: 25.autoSized),
+            deleteIcon.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: -25.widthRatio),
+            deleteIcon.bottomAnchor.constraint(equalTo: cellView.bottomAnchor, constant: -25.autoSized),
             
-            editView.topAnchor.constraint(equalTo: taskDescription.bottomAnchor, constant: 15),
-//            editView.bottomAnchor.constraint(equalTo: cellView.topAnchor, constant: 25),
-            editView.leadingAnchor.constraint(equalTo: cellView.leadingAnchor, constant: 25),
+            editView.topAnchor.constraint(equalTo: taskDescription.bottomAnchor, constant: 15.autoSized),
+            editView.leadingAnchor.constraint(equalTo: cellView.leadingAnchor, constant: 20.widthRatio),
         ])
     }
     private func addTargets() {
